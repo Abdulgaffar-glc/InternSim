@@ -1,1 +1,1 @@
-# INTERN-S-M
+# InternSim
