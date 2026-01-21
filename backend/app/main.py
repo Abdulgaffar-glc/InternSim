@@ -9,6 +9,7 @@ from backend.app.routes import internship
 from backend.app.routes import task
 from backend.app.routes import submission
 from backend.app.routes import evaluation
+from backend.app.routes import dashboard
 
 
 app = FastAPI(title="Intern Sim API")
@@ -34,3 +35,5 @@ app.include_router(task.router)
 app.include_router(submission.router)
 
 app.include_router(evaluation.router)
+
+app.include_router(dashboard.router)
