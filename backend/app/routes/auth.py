@@ -36,7 +36,7 @@ def login(data: LoginSchema, db: Session = Depends(get_db)):
     print(f"FUNCTION LOCATION: {inspect.getfile(create_access_token)}")
     
     token = create_access_token({
-        "sub": user.id,
+        "sub":  str(user.id),
         "email": user.email,
         "role": user.role
     })

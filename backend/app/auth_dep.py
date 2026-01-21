@@ -11,6 +11,7 @@ async def get_current_user(res: HTTPAuthorizationCredentials = Depends(security)
         print(f"DEBUG_KEY: [{SECRET_KEY}] | Length: {len(SECRET_KEY)}")
         # PyJWT requires the algorithms list
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        payload["sub"] = int(payload["sub"])
         return payload
     except jwt.ExpiredSignatureError:
         raise HTTPException(status_code=401, detail="Token has expired")
