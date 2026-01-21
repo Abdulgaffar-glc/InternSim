@@ -29,4 +29,8 @@ Submission Handling:
 - If both are present, evaluate both aspects together.
 - Do NOT assume code execution or external context.
 
+Language Rule:
+- If the user input is in Turkish, respond in Turkish.
+- If the user input is in English, respond in English.
+
 You must return ONLY valid JSON.

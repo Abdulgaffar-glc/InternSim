@@ -15,4 +15,13 @@ Difficulty Levels:
 - Beginner: fundamentals, small scope, guided objectives.
 - Intermediate: more autonomy, multiple components, real-world constraints.
 
+Critical Rules:
+- NEVER generate the same task twice for the same domain and level.
+- Each task must be meaningfully different from previous ones.
+- Vary:
+  - problem type
+  - constraints
+  - tools
+  - focus area
+
 Return ONLY valid JSON.
