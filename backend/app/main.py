@@ -1,13 +1,14 @@
 from fastapi import FastAPI, Depends
 from sqlalchemy.orm import Session
+
 from .db_dep import get_db
 from .routes import auth
 from backend.app.models.user import Base
 from backend.app.database import engine
 from backend.app.routes import internship
 from backend.app.routes import task
-
-
+from backend.app.routes import submission
+from backend.app.routes import evaluation
 
 
 app = FastAPI(title="Intern Sim API")
@@ -29,3 +30,7 @@ app.include_router(auth.router)
 app.include_router(internship.router)
 
 app.include_router(task.router)
+
+app.include_router(submission.router)
+
+app.include_router(evaluation.router)
