@@ -5,6 +5,8 @@ from .routes import auth
 from backend.app.models.user import Base
 from backend.app.database import engine
 from backend.app.routes import internship
+from backend.app.routes import task
+
 
 
 
@@ -25,3 +27,5 @@ def db_test(db: Session = Depends(get_db)):
 app.include_router(auth.router)
 
 app.include_router(internship.router)
+
+app.include_router(task.router)
