@@ -1,62 +1,90 @@
-from fastapi import APIRouter
-from pydantic import BaseModel
-import os
-import requests
+from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy.orm import Session
 from dotenv import load_dotenv
 
-from ai.task_prompt_builder import build_task_prompt
+# --- Proje İçi Importlar ---
+# Dosya yollarını senin attığın görsele göre ayarladım
+from backend.app.db_dep import get_db
+from backend.app.auth_dep import get_current_user
+from backend.app.models.task import Task
+from backend.app.models.internship import Internship
+
+# Logic'i ayırdığımız servis dosyasını çağırıyoruz
+from backend.app.services.task_agent import generate_task 
 
 load_dotenv()
 
 router = APIRouter(prefix="/tasks", tags=["Tasks"])
 
-API_KEY = os.getenv("IOINTELLIGENCE_API_KEY")
+@router.post("/new")
+def create_new_task(db: Session = Depends(get_db),
+                    user = Depends(get_current_user)):
+    """
+    Kullanıcının aktif stajına göre yeni bir yapay zeka destekli görev oluşturur.
+    Veritabanındaki 'tasks' tablosuna (title, description, difficulty) uygun kayıt atar.
+    """
+    
+    # 1. Kullanıcının aktif stajını (internship) bul
+    internship = db.query(Internship).filter(
+        Internship.user_id == user["sub"],
+        Internship.status == "active"
+    ).first()
 
-BASE_DIR = os.path.dirname(
-    os.path.dirname(
-        os.path.dirname(
-            os.path.dirname(__file__)
-        )
-    )
-)
+    # Eğer aktif staj yoksa işlem yapamayız
+    if not internship:
+        raise HTTPException(status_code=404, detail="Aktif bir staj bulunamadı.")
 
+    # 2. AI Servisini Çağır (task_agent.py içindeki fonksiyon)
+    # Bu fonksiyon bize { "title": "...", "description": "...", "difficulty": "..." } dönecek.
+    try:
+        # Internship tablosundaki 'track' (alan) ve 'level' (seviye) bilgisini gönderiyoruz
+        ai_data = generate_task(track=internship.track, level=internship.level)
+        
+    except Exception as e:
+        # AI servisinde bir hata olursa 500 dönüyoruz
+        print(f"Service Error: {e}")
+        raise HTTPException(status_code=500, detail="AI servisi şu an yanıt veremiyor.")
 
-class TaskGenerateRequest(BaseModel):
-    domain: str
-    level: str  # beginner | intermediate
-
-
-@router.post("/generate")
-def generate_task(req: TaskGenerateRequest):
-
-    prompt = build_task_prompt(
-        domain=req.domain,
-        level=req.level
-    )
-
-    system_prompt = open(
-        os.path.join(BASE_DIR, "ai", "task_generator.txt"),
-        encoding="utf-8"
-    ).read()
-
-    payload = {
-        "model": "meta-llama/Llama-3.3-70B-Instruct",
-        "messages": [
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": prompt}
-        ],
-        "temperature": 0.8
-    }
-
-    response = requests.post(
-        "https://api.intelligence.io.solutions/api/v1/chat/completions",
-        headers={
-            "Authorization": f"Bearer {API_KEY}",
-            "Content-Type": "application/json"
-        },
-        json=payload,
-        timeout=60
+    # 3. Veritabanı Nesnesini Oluştur (Mapping)
+    # Arkadaşının veritabanı şemasına %100 uyumlu hale getirdik.
+    new_task = Task(
+        internship_id=internship.id,
+        title=ai_data.get("title", "Generated Task"),       # DB: title
+        description=ai_data.get("description", ""),         # DB: description
+        difficulty=ai_data.get("difficulty", internship.level), # DB: difficulty
+        status="active"                                     # DB: status
     )
 
-    response.raise_for_status()
-    return response.json()
+    # 4. Kaydet ve Döndür
+    try:
+        db.add(new_task)
+        db.commit()
+        db.refresh(new_task)
+        return new_task
+        
+    except Exception as e:
+        db.rollback()
+        print(f"Database Error: {e}")
+        raise HTTPException(status_code=500, detail="Veritabanına kayıt sırasında hata oluştu.")
+
+
+@router.get("/list")
+def list_tasks(db: Session = Depends(get_db),
+               user = Depends(get_current_user)):
+    """
+    Kullanıcının aktif stajına ait tüm görevleri listeler.
+    """
+    internship = db.query(Internship).filter(
+        Internship.user_id == user["sub"],
+        Internship.status == "active"
+    ).first()
+
+    if not internship:
+        return []
+
+    # O staja ait görevleri, en yeni en üstte olacak şekilde getir
+    tasks = db.query(Task).filter(
+        Task.internship_id == internship.id
+    ).order_by(Task.created_at.desc()).all()
+
+    return tasks
