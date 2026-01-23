@@ -24,9 +24,10 @@ const DashboardContent = () => {
   const [activeMenu, setActiveMenu] = useState<ActiveMenu>("tasks");
   const [userField, setUserField] = useState<InternshipField>("frontend");
   const [userLevel, setUserLevel] = useState<InternshipLevel>("junior");
-  const { logout } = useAuth();
+  const { logout, user } = useAuth();
+  const [stats, setStats] = useState({ evaluated: 0 });
 
-  // Check for existing internship on mount
+  // Check for existing internship and fetch stats on mount
   useEffect(() => {
     const checkInternship = async () => {
       try {
@@ -43,7 +44,19 @@ const DashboardContent = () => {
       }
     };
     
+    const fetchStats = async () => {
+        try {
+            const res = await api.get("/dashboard/");
+            setStats(res.data);
+        } catch (error) {
+            console.error("Failed to fetch sidebar stats:", error);
+        }
+    };
+
     checkInternship();
+    if (localStorage.getItem("token")) {
+        fetchStats();
+    }
   }, []); // Only run once on mount
 
   const handleLogout = () => {
@@ -65,6 +78,9 @@ const DashboardContent = () => {
       setUserLevel(level);
       setIsOnboarded(true);
       toast.success("Internship started successfully!");
+      // Refresh stats after onboarding
+      const res = await api.get("/dashboard/");
+      setStats(res.data);
     } catch (error) {
       console.error("Failed to start internship:", error);
       toast.error("Failed to start internship. Please try again.");
@@ -108,6 +124,8 @@ const DashboardContent = () => {
         onLogout={handleLogout}
         userField={userField}
         userLevel={userLevel}
+        userName={user?.name || "Intern"}
+        evaluatedCount={stats.evaluated || 0}
       />
       <main className="flex-1 p-6 overflow-y-auto">
         <div className="h-full animate-fade-in">{renderContent()}</div>

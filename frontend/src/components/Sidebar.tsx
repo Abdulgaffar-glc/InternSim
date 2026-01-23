@@ -9,6 +9,8 @@ interface SidebarProps {
   onLogout: () => void;
   userField: InternshipField;
   userLevel: InternshipLevel;
+  userName: string;
+  evaluatedCount: number;
 }
 
 const fieldIcons = {
@@ -25,7 +27,15 @@ const fieldColors = {
   cybersecurity: 'text-red-400',
 };
 
-export const Sidebar = ({ activeMenu, onMenuChange, onLogout, userField, userLevel }: SidebarProps) => {
+export const Sidebar = ({ 
+  activeMenu, 
+  onMenuChange, 
+  onLogout, 
+  userField, 
+  userLevel, 
+  userName, 
+  evaluatedCount 
+}: SidebarProps) => {
   const { t } = useLanguage();
   
   const menuItems = [
@@ -38,6 +48,12 @@ export const Sidebar = ({ activeMenu, onMenuChange, onLogout, userField, userLev
   const FieldIcon = fieldIcons[userField];
   const levelLabels = { junior: t.junior, mid: t.mid, senior: t.senior };
   const fieldLabels = { frontend: t.frontend, backend: t.backend, ai: t.ai, cybersecurity: t.cybersecurity };
+
+  // Calculate Level and XP
+  const currentLevel = Math.floor(evaluatedCount / 5) + 1;
+  const currentXP = evaluatedCount * 100;
+  const nextLevelXP = currentLevel * 500;
+  const xpProgress = ((evaluatedCount % 5) * 20); // 0-100%
 
   return (
     <div className="w-72 h-screen bg-sidebar border-r border-sidebar-border flex flex-col">
@@ -64,7 +80,7 @@ export const Sidebar = ({ activeMenu, onMenuChange, onLogout, userField, userLev
             <User className="w-6 h-6 text-primary" />
           </div>
           <div className="flex-1 min-w-0">
-            <h3 className="font-semibold text-foreground truncate">Ahmet Yılmaz</h3>
+            <h3 className="font-semibold text-foreground truncate">{userName}</h3>
             <div className="flex items-center gap-2">
               <FieldIcon className={`w-3 h-3 ${fieldColors[userField]}`} />
               <p className="text-xs text-muted-foreground">
@@ -78,16 +94,16 @@ export const Sidebar = ({ activeMenu, onMenuChange, onLogout, userField, userLev
             <span className="text-muted-foreground">{t.level}</span>
             <div className="flex items-center gap-1.5">
               <Sparkles className="w-4 h-4 text-primary" />
-              <span className="font-semibold text-primary">12</span>
+              <span className="font-semibold text-primary">{currentLevel}</span>
             </div>
           </div>
           <div className="mt-2">
             <div className="flex items-center justify-between text-xs mb-1">
               <span className="text-muted-foreground">XP</span>
-              <span className="text-foreground">2,450 / 3,000</span>
+              <span className="text-foreground">{currentXP} / {nextLevelXP}</span>
             </div>
             <div className="progress-bar">
-              <div className="progress-fill" style={{ width: '82%' }} />
+              <div className="progress-fill" style={{ width: `${xpProgress}%` }} />
             </div>
           </div>
         </div>
