@@ -10,18 +10,32 @@ from backend.app.schemas.auth import LoginSchema, RegisterSchema
 router = APIRouter(prefix="/auth", tags=["Auth"])
 
 @router.post("/register")
-def register(email: str, password: str, db: Session = Depends(get_db)):
-    user = db.query(User).filter(User.email == email).first()
+def register(data: RegisterSchema, db: Session = Depends(get_db)):
+    user = db.query(User).filter(User.email == data.email).first()
     if user:
         raise HTTPException(status_code=400, detail="User exists")
 
     new_user = User(
-        email=email,
-        hashed_password=hash_password(password)
+        name=data.name,
+        email=data.email,
+        hashed_password=hash_password(data.password)
     )
+
     db.add(new_user)
     db.commit()
-    return {"msg": "User created"}
+    db.refresh(new_user)
+
+    token = create_access_token({
+        "sub": str(new_user.id),
+        "email": new_user.email,
+        "role": new_user.role
+    })
+
+    return {
+        "access_token": token,
+        "token_type": "bearer"
+    }
+
 
 @router.post("/login")
 def login(data: LoginSchema, db: Session = Depends(get_db)):
@@ -38,6 +52,7 @@ def login(data: LoginSchema, db: Session = Depends(get_db)):
     token = create_access_token({
         "sub":  str(user.id),
         "email": user.email,
+        "name": user.name,
         "role": user.role
     })
 
