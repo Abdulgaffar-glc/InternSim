@@ -1,0 +1,26 @@
+[
+  {
+    "role": "user",
+    "content": "Context: \n\nCode/Question:\nmerhaba"
+  },
+  {
+    "role": "assistant",
+    "content": "Selam! Nasılsın? Yardımcı olabileceğim bir konu var mı? 🙌"
+  },
+  {
+    "role": "user",
+    "content": "Context: \n\nCode/Question:\niyyim teşşşekür ederim bugun ne yapacağımızı konuşmak için yazzdım"
+  },
+  {
+    "role": "assistant",
+    "content": "İyiyim, teşekkür ederim! Bugünkü planlar neler? Bir proje üzerinde çalışıyorsun veya bir sorun mu yaşıyorsun? Hadi konuşalım, nasıl yardımcı olabilirim?"
+  },
+  {
+    "role": "user",
+    "content": "Context: \n\nCode/Question:\nben backend tarfınnda çalışmak istiyorum ne yapmalıyım"
+  },
+  {
+    "role": "assistant",
+    "content": "Selam! Backend tarafına yönelmek harika bir karar; şu adımları izlersen sağlam bir temele oturursun:\n\n---\n\n### 1️⃣ Temel Programlama Dili\n- **Java** → Spring Boot ekosistemi çok popüler.\n- **Python** → Django/Flask hızlı prototipleme için.\n- **Node.js (JavaScript/TypeScript)** → Express ya da NestJS ile modern stack.\n\nBirini seçip **derinlemesine** öğren. Syntax’ı değil mantığı kavramaya odaklan; OOP ve async akışlar çok işine yarayacak.\n\n---\n\n### 2️⃣ Web Framework’leri\n| Dil | Framework | Neden? |\n|-----|-----------|--------|\n| Java | Spring Boot | Mikroservis mimarisi, güçlü DI container |\n| Python | Django / FastAPI | “Batteries‑included” veya ultra‑performanslı API |\n| Node.js | Express / NestJS | Hafif ve TypeScript desteğiyle tip güvenliği |\n\nTemel CRUD uygulamaları yap: kullanıcı kaydı, oturum açma vs.\n\n---\n\n### 3️⃣ Veri Tabanları\n- **SQL**: PostgreSQL ya da MySQL – ilişkisel model, JOIN’ler ve ACID.\n- **NoSQL**: MongoDB ya da Redis – belge/tabanlı ve cache ihtiyaçları.\n\nORM/ODM kullanmayı öğren:\n- JPA/Hibernate (Java)\n- SQLAlchemy / Django ORM (Python)\n- TypeORM / Prisma (Node)\n\n---\n\n### 4️⃣ API Tasarımı\n- **REST**: HTTP metodları + status kodları.\n- **GraphQL** (isteğe bağlı): Tek endpoint üzerinden esnek sorgular.\n- OpenAPI/Swagger dokümantasyonu oluştur; hem ekip içinde hem de dışarıda iletişimi kolaylaştırır.\n\n---\n\n### 5️⃣ Güvenlik\n- JWT / OAuth2 ile kimlik doğrulama.\n- Şifreleme (bcrypt/scrypt) ve veri doğrulama.\n- Rate limiting & CORS ayarları.\n  \nKüçük bir login sistemi kurup token bazlı auth deneyebilirsin.\n\n---\n\n### 6️⃣ Testler & CI/CD\n- Unit test: JUnit (Java), pytest (Python), Jest (Node).\n- Integration test: Testcontainers veya in‑memory DB.\n- CI pipeline: GitHub Actions / GitLab CI – her push’tan test çalıştırıp build al.\n\n---\n\n### 7️⃣ Container & Orkestrasyon\n- Dockerfile yazarak uygulamanı container’a al.\n- Docker Compose ile DB + API'yi aynı ortamda çalıştır.\n- İleride Kubernetes’e geçiş için temel kavramları öğren.\n\n---\n\n### 8️⃣ DevOps & Bulut\n- AWS/GCP/Azure’da bir VM ya da managed DB hizmeti oluştur.\n- IaC araçları: Terraform ya da Pulumi ile altyapıyı kodla yönet.\n\n---\n\n## 📚 Önerilen Kaynaklar\n\n| Konu | Kaynak |\n|------|--------|\n| Java + Spring Boot | *“Spring in Action”* kitabı + Baeldung blogu |\n| Python + FastAPI | Resmi docs + “FastAPI for Beginners” YouTube serisi |\n| Node.js + NestJS | Official NestJS docs + Udemy “NestJS Zero to Hero” |\n| SQL/NoSQL | “SQL Antipatterns” – Bill Karwin; MongoDB University ücretsiz kursları |\n| Docker | “Docker Deep Dive” – Nigel Poulton |\n| CI/CD | GitHub Actions docs; “Continuous Delivery” by Humble & Farley |\n\nAyrıca **mini projeler** yaparak pekiştir:\n1. Blog API → CRUD + pagination + JWT auth  \n2. Todo list with real‑time updates → WebSocket/Server‑Sent Events  \n3. E‑ticaret mikroservis seti → ürün servisleri + ödeme simülasyonu  \n\nBu projeleri GitHub’da açık tut ve README’de kullandığın teknolojileri listele; işe alım sürecinde büyük artı sağlar.\n\n---\n\n### 🎯 Son Adım\n1. Bir dil/framework seç → temel proje hazırla.  \n2. DB bağla, auth ekle → test yaz.  \n3. Dockerize edip CI pipeline kur.  \n\nBu döngüyü birkaç kez tekrarladıkça “backend geliştiricisi” olma yolunda ilerliyorsun.\n\nHer adımda takıldığın bir şey olursa bana sor, beraber çözeriz! 🚀"
+  }
+]
