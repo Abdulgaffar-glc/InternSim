@@ -8,6 +8,6 @@ class Evaluation(Base):
     id = Column(Integer, primary_key=True, index=True)
     submission_id = Column(Integer, index=True)
     score = Column(Integer)
-    feedback = Column(Text)
+    feedback_text = Column(Text)
     agent_name = Column(String)
     created_at = Column(TIMESTAMP(timezone=True), server_default=func.now())

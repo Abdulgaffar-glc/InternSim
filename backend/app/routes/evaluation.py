@@ -5,7 +5,7 @@ from backend.app.db_dep import get_db
 from backend.app.auth_dep import get_current_user
 from backend.app.models.submission import Submission
 from backend.app.models.evaluation import Evaluation
-from backend.app.services.evaluator_agent import evaluate_submission
+from backend.app.services.evaluator_agent import evaluate_submission_content as evaluate_submission
 
 router = APIRouter(prefix="/evaluation", tags=["Evaluation"])
 
