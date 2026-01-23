@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
+import { useAuth } from "@/contexts/AuthContext";
 import {
   Code2,
   Brain,
@@ -18,6 +19,7 @@ import { Button } from "@/components/ui/button";
 
 const Landing = () => {
   const { t } = useLanguage();
+  const { user } = useAuth();
 
   const fields = [
     { icon: Code2, title: t.frontend, color: "from-blue-500 to-cyan-500" },
@@ -74,17 +76,28 @@ const Landing = () => {
             </div>
             <div className="flex items-center gap-4">
               <LanguageSwitcher />
-              <Link to="/auth">
-                <Button variant="outline" className="hidden sm:flex">
-                  {t.login}
-                </Button>
-              </Link>
-              <Link to="/auth">
-                <Button className="bg-gradient-to-r from-primary to-accent hover:opacity-90">
-                  {t.getStarted}
-                  <ChevronRight className="w-4 h-4 ml-1" />
-                </Button>
-              </Link>
+              {user ? (
+                <Link to="/dashboard">
+                  <Button className="bg-gradient-to-r from-primary to-accent hover:opacity-90">
+                    {t.dashboard || "Dashboard"}
+                    <ChevronRight className="w-4 h-4 ml-1" />
+                  </Button>
+                </Link>
+              ) : (
+                <>
+                  <Link to="/auth?view=login">
+                    <Button variant="outline" className="hidden sm:flex">
+                      {t.login}
+                    </Button>
+                  </Link>
+                  <Link to="/auth?view=register">
+                    <Button className="bg-gradient-to-r from-primary to-accent hover:opacity-90">
+                      {t.getStarted}
+                      <ChevronRight className="w-4 h-4 ml-1" />
+                    </Button>
+                  </Link>
+                </>
+              )}
             </div>
           </div>
         </div>
@@ -117,15 +130,27 @@ const Landing = () => {
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link to="/auth">
-                <Button
-                  size="lg"
-                  className="bg-gradient-to-r from-primary to-accent hover:opacity-90 text-lg px-8"
-                >
-                  {t.startInternship}
-                  <Rocket className="w-5 h-5 ml-2" />
-                </Button>
-              </Link>
+              {user ? (
+                <Link to="/dashboard">
+                  <Button
+                    size="lg"
+                    className="bg-gradient-to-r from-primary to-accent hover:opacity-90 text-lg px-8"
+                  >
+                    {t.dashboard || "Dashboard"}
+                    <Rocket className="w-5 h-5 ml-2" />
+                  </Button>
+                </Link>
+              ) : (
+                <Link to="/auth?view=register">
+                  <Button
+                    size="lg"
+                    className="bg-gradient-to-r from-primary to-accent hover:opacity-90 text-lg px-8"
+                  >
+                    {t.startInternship}
+                    <Rocket className="w-5 h-5 ml-2" />
+                  </Button>
+                </Link>
+              )}
               <Button size="lg" variant="outline" className="text-lg px-8">
                 {t.learnMore}
               </Button>

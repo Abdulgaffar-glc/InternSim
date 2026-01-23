@@ -56,6 +56,7 @@ type TranslationKeys = {
   performance: string;
   projectSubmission: string;
   level: string;
+  dashboard: string;
 
   // Task Panel
   taskPanelTitle: string;
@@ -234,6 +235,7 @@ const translations: Record<Language, TranslationKeys> = {
     performance: "Performans",
     projectSubmission: "Proje Teslim",
     level: "Seviye",
+    dashboard: "Panel",
 
     // Task Panel
     taskPanelTitle: "Görev Paneli",
@@ -434,6 +436,7 @@ const translations: Record<Language, TranslationKeys> = {
     performance: "Performance",
     projectSubmission: "Project Submission",
     level: "Level",
+    dashboard: "Dashboard",
 
     // Task Panel
     taskPanelTitle: "Task Panel",

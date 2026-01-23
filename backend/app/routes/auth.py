@@ -11,8 +11,10 @@ router = APIRouter(prefix="/auth", tags=["Auth"])
 
 @router.post("/register")
 def register(data: RegisterSchema, db: Session = Depends(get_db)):
+    print(f"DEBUG: Register attempt with email: {data.email}, name: {data.name}")
     user = db.query(User).filter(User.email == data.email).first()
     if user:
+        print(f"DEBUG: User already exists: {data.email}")
         raise HTTPException(status_code=400, detail="User exists")
 
     new_user = User(
@@ -28,6 +30,7 @@ def register(data: RegisterSchema, db: Session = Depends(get_db)):
     token = create_access_token({
         "sub": str(new_user.id),
         "email": new_user.email,
+        "name": new_user.name,
         "role": new_user.role
     })
 
@@ -35,6 +38,7 @@ def register(data: RegisterSchema, db: Session = Depends(get_db)):
         "access_token": token,
         "token_type": "bearer"
     }
+
 
 
 @router.post("/login")

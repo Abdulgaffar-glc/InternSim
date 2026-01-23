@@ -15,19 +15,30 @@ import { LanguageSwitcher } from "./LanguageSwitcher";
 
 interface AuthScreenProps {
   onLogin: (email: string, password: string) => void;
+  onRegister: (email: string, password: string, name: string) => void;
+  initialView?: "login" | "register";
 }
 
-export const AuthScreen = ({ onLogin }: AuthScreenProps) => {
+export const AuthScreen = ({ onLogin, onRegister, initialView = "login" }: AuthScreenProps) => {
   const { t } = useLanguage();
-  const [isLogin, setIsLogin] = useState(true);
+  const [isLogin, setIsLogin] = useState(initialView === "login");
   const [showPassword, setShowPassword] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
+  
+  // Independent States
+  const [loginEmail, setLoginEmail] = useState("");
+  const [loginPassword, setLoginPassword] = useState("");
+
+  const [registerEmail, setRegisterEmail] = useState("");
+  const [registerPassword, setRegisterPassword] = useState("");
+  const [registerName, setRegisterName] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onLogin(email, password);
+    if (isLogin) {
+      onLogin(loginEmail, loginPassword);
+    } else {
+      onRegister(registerEmail, registerPassword, registerName);
+    }
   };
 
   return (
@@ -112,8 +123,8 @@ export const AuthScreen = ({ onLogin }: AuthScreenProps) => {
                   <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
                   <input
                     type="text"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
+                    value={registerName}
+                    onChange={(e) => setRegisterName(e.target.value)}
                     placeholder={t.enterName}
                     className="input-cyber pl-12"
                   />
@@ -129,8 +140,12 @@ export const AuthScreen = ({ onLogin }: AuthScreenProps) => {
                 <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
                 <input
                   type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  value={isLogin ? loginEmail : registerEmail}
+                  onChange={(e) =>
+                    isLogin
+                      ? setLoginEmail(e.target.value)
+                      : setRegisterEmail(e.target.value)
+                  }
                   placeholder={t.enterEmail}
                   className="input-cyber pl-12"
                 />
@@ -145,8 +160,12 @@ export const AuthScreen = ({ onLogin }: AuthScreenProps) => {
                 <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
                 <input
                   type={showPassword ? "text" : "password"}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  value={isLogin ? loginPassword : registerPassword}
+                  onChange={(e) =>
+                    isLogin
+                      ? setLoginPassword(e.target.value)
+                      : setRegisterPassword(e.target.value)
+                  }
                   placeholder="••••••••"
                   className="input-cyber pl-12 pr-12"
                 />

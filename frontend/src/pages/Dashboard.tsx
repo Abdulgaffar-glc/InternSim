@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 import { Sidebar } from "@/components/Sidebar";
 import { TaskPanel } from "@/components/TaskPanel";
 import { MentorChat } from "@/components/MentorChat";
@@ -12,30 +13,73 @@ import {
 } from "@/components/OnboardingFlow";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { useAuth } from "@/contexts/AuthContext";
+import api from "@/api/api";
 
 type ActiveMenu = "tasks" | "chat" | "performance" | "submission";
 
 const DashboardContent = () => {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
   const [isOnboarded, setIsOnboarded] = useState(false);
   const [activeMenu, setActiveMenu] = useState<ActiveMenu>("tasks");
   const [userField, setUserField] = useState<InternshipField>("frontend");
   const [userLevel, setUserLevel] = useState<InternshipLevel>("junior");
   const { logout } = useAuth();
 
+  // Check for existing internship on mount
+  useEffect(() => {
+    const checkInternship = async () => {
+      try {
+        const res = await api.get("/internship/me");
+        if (res.data && res.data.status !== "no_active_internship") {
+          setUserField(res.data.track as InternshipField);
+          setUserLevel(res.data.level as InternshipLevel);
+          setIsOnboarded(true);
+        }
+      } catch (error) {
+        console.error("Failed to check internship status:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    checkInternship();
+  }, []); // Only run once on mount
+
   const handleLogout = () => {
     logout();
     navigate("/auth", { replace: true });
   };
 
-  const handleOnboardingComplete = (
+  const handleOnboardingComplete = async (
     field: InternshipField,
     level: InternshipLevel
   ) => {
-    setUserField(field);
-    setUserLevel(level);
-    setIsOnboarded(true);
+    try {
+      setIsLoading(true);
+      await api.post("/internship/start", {
+        track: field,
+        level: level,
+      });
+      setUserField(field);
+      setUserLevel(level);
+      setIsOnboarded(true);
+      toast.success("Internship started successfully!");
+    } catch (error) {
+      console.error("Failed to start internship:", error);
+      toast.error("Failed to start internship. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
   };
+
+  if (isLoading) {
+    return (
+      <div className="h-screen flex items-center justify-center bg-background text-foreground">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
 
   if (!isOnboarded) {
     return <OnboardingFlow onComplete={handleOnboardingComplete} />;
