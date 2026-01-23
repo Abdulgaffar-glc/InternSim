@@ -26,9 +26,19 @@ from backend.app.routes import task
 from backend.app.routes import submission
 from backend.app.routes import evaluation
 from backend.app.routes import dashboard
+from fastapi.middleware.cors import CORSMiddleware
+
 
 
 app = FastAPI(title="Intern Sim API")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:8080"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.on_event("startup")
 def startup():
