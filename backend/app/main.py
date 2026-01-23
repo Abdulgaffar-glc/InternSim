@@ -1,3 +1,19 @@
+
+import sys
+import os
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+sys.path.append(BASE_DIR)
+
+from fastapi import FastAPI
+from .routes import tasks, auth, mentor
+
+app = FastAPI(title="Intern Sim API")
+
+app.include_router(auth.router)
+app.include_router(tasks.router)
+app.include_router(mentor.router)
+
 from fastapi import FastAPI, Depends
 from sqlalchemy.orm import Session
 
@@ -17,6 +33,8 @@ app = FastAPI(title="Intern Sim API")
 @app.on_event("startup")
 def startup():
     Base.metadata.create_all(bind=engine)
+
+
 
 @app.get("/")
 def root():
