@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import {
   TrendingUp,
   Award,
@@ -7,6 +8,7 @@ import {
   Trophy,
   ChevronUp,
   Calendar,
+  Loader2,
 } from "lucide-react";
 import {
   RadarChart,
@@ -25,13 +27,36 @@ import {
   Line,
 } from "recharts";
 import { useLanguage } from "@/contexts/LanguageContext";
+import api from "@/api/api";
 
 export const PerformanceDashboard = () => {
   const { t, language } = useLanguage();
+  const [stats, setStats] = useState({
+    total_tasks: 0,
+    submitted: 0,
+    evaluated: 0,
+    average_score: 0,
+    last_feedback: null
+  });
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const res = await api.get("/dashboard/");
+        setStats(res.data);
+      } catch (error) {
+        console.error("Failed to fetch dashboard stats:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchStats();
+  }, []);
 
   const skillsData = [
-    { skill: "Problem Solving", value: 85 },
-    { skill: language === "tr" ? "Kod Kalitesi" : "Code Quality", value: 78 },
+    { skill: "Problem Solving", value: stats.average_score || 85 }, // Use avg score as proxy
+    { skill: language === "tr" ? "Kod Kalitesi" : "Code Quality", value: stats.average_score || 78 },
     { skill: language === "tr" ? "İletişim" : "Communication", value: 72 },
     {
       skill: language === "tr" ? "Zaman Yönetimi" : "Time Management",
@@ -42,20 +67,28 @@ export const PerformanceDashboard = () => {
   ];
 
   const progressData = [
-    { week: language === "tr" ? "Hafta 1" : "Week 1", xp: 150, tasks: 2 },
-    { week: language === "tr" ? "Hafta 2" : "Week 2", xp: 380, tasks: 4 },
-    { week: language === "tr" ? "Hafta 3" : "Week 3", xp: 620, tasks: 5 },
-    { week: language === "tr" ? "Hafta 4" : "Week 4", xp: 950, tasks: 6 },
-    { week: language === "tr" ? "Hafta 5" : "Week 5", xp: 1400, tasks: 8 },
-    { week: language === "tr" ? "Hafta 6" : "Week 6", xp: 1850, tasks: 7 },
-    { week: language === "tr" ? "Hafta 7" : "Week 7", xp: 2450, tasks: 9 },
+    { week: language === "tr" ? "Hafta 1" : "Week 1", xp: 150, tasks: Math.min(stats.total_tasks, 2) },
+    { week: language === "tr" ? "Hafta 2" : "Week 2", xp: 380, tasks: Math.min(stats.total_tasks, 4) },
+    { week: language === "tr" ? "Hafta 3" : "Week 3", xp: 620, tasks: Math.min(stats.total_tasks, 5) },
+    { week: language === "tr" ? "Hafta 4" : "Week 4", xp: 950, tasks: Math.min(stats.total_tasks, 6) },
+    { week: language === "tr" ? "Hafta 5" : "Week 5", xp: 1400, tasks: Math.min(stats.total_tasks, 8) },
+    { week: language === "tr" ? "Hafta 6" : "Week 6", xp: 1850, tasks: Math.min(stats.total_tasks, 7) },
+    { week: language === "tr" ? "Hafta 7" : "Week 7", xp: 2450, tasks: stats.total_tasks },
   ];
 
   const metrics = [
-    { label: t.codeQuality, value: 87, change: +5, icon: Star },
-    { label: t.speed, value: 92, change: +8, icon: Zap },
+    { label: t.codeQuality, value: stats.average_score || 0, change: +5, icon: Star },
+    { label: t.speed, value: stats.submitted * 10 || 0, change: +8, icon: Zap },
     { label: t.requirements, value: 94, change: +3, icon: Target },
   ];
+
+  if (isLoading) {
+    return (
+      <div className="h-full flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+      </div>
+    );
+  }
 
   const achievements = [
     {
@@ -115,32 +148,34 @@ export const PerformanceDashboard = () => {
         <div className="absolute top-0 right-0 w-64 h-64 bg-primary/10 rounded-full blur-[80px]" />
         <div className="relative flex items-center gap-6">
           <div className="w-24 h-24 rounded-2xl bg-primary/20 flex items-center justify-center neon-glow">
-            <span className="text-4xl font-bold text-gradient-primary">12</span>
+            <span className="text-4xl font-bold text-gradient-primary">
+              {Math.floor(stats.evaluated / 5) + 1}
+            </span>
           </div>
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-2">
               <h2 className="text-2xl font-bold text-foreground">
-                Junior Developer
+                {stats.evaluated > 20 ? "Senior Intern" : stats.evaluated > 10 ? "Mid Intern" : "Junior Intern"}
               </h2>
               <span className="badge bg-primary/20 text-primary">
-                {t.level} 12
+                {t.level} {Math.floor(stats.evaluated / 5) + 1}
               </span>
             </div>
             <div className="flex items-center gap-4 mb-3">
               <div className="flex items-center gap-1">
                 <Zap className="w-5 h-5 text-primary" />
                 <span className="text-xl font-semibold text-foreground">
-                  2,450 XP
+                  {stats.evaluated * 100} XP
                 </span>
               </div>
-              <span className="text-muted-foreground">/ 3,000 XP</span>
+              <span className="text-muted-foreground">/ {(Math.floor(stats.evaluated / 5) + 1) * 500} XP</span>
             </div>
             <div className="progress-bar h-3">
-              <div className="progress-fill" style={{ width: "82%" }} />
+              <div className="progress-fill" style={{ width: `${(stats.evaluated % 5) * 20}%` }} />
             </div>
             <p className="text-sm text-muted-foreground mt-2">
               {t.nextLevel}{" "}
-              <span className="text-primary font-semibold">550 XP</span>{" "}
+              <span className="text-primary font-semibold">{(5 - (stats.evaluated % 5)) * 100} XP</span>{" "}
               {t.remaining}
             </p>
           </div>

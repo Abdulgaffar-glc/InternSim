@@ -1,12 +1,14 @@
-import { useState } from 'react';
-import { X, Clock, Zap, ChevronRight, Code2, Bug, Database, FileText, Brain, Shield, Server } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { X, Clock, Zap, ChevronRight, Code2, Bug, Database, FileText, Brain, Shield, Server, Loader2 } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { InternshipField, InternshipLevel } from './OnboardingFlow';
+import api from "@/api/api";
+import { toast } from 'sonner';
 
 interface Task {
   id: number;
-  titleKey: string;
-  descKey: string;
+  title: string;
+  description: string;
   difficulty: 'junior' | 'mid' | 'senior';
   xp: number;
   status: 'todo' | 'progress' | 'done';
@@ -20,151 +22,59 @@ interface TaskPanelProps {
   level: InternshipLevel;
 }
 
-const allTasks: Task[] = [
-  // Frontend tasks
-  {
-    id: 1,
-    titleKey: 'frontendTask1',
-    descKey: 'frontendTask1Desc',
-    difficulty: 'mid',
-    xp: 200,
-    status: 'progress',
-    dueDate: '3',
-    icon: Code2,
-    field: 'frontend',
-  },
-  {
-    id: 2,
-    titleKey: 'frontendTask2',
-    descKey: 'frontendTask2Desc',
-    difficulty: 'junior',
-    xp: 100,
-    status: 'todo',
-    dueDate: '2',
-    icon: Code2,
-    field: 'frontend',
-  },
-  {
-    id: 3,
-    titleKey: 'frontendTask3',
-    descKey: 'frontendTask3Desc',
-    difficulty: 'senior',
-    xp: 350,
-    status: 'done',
-    dueDate: '0',
-    icon: Code2,
-    field: 'frontend',
-  },
-  // Backend tasks
-  {
-    id: 4,
-    titleKey: 'backendTask1',
-    descKey: 'backendTask1Desc',
-    difficulty: 'mid',
-    xp: 250,
-    status: 'progress',
-    dueDate: '4',
-    icon: Server,
-    field: 'backend',
-  },
-  {
-    id: 5,
-    titleKey: 'backendTask2',
-    descKey: 'backendTask2Desc',
-    difficulty: 'junior',
-    xp: 150,
-    status: 'todo',
-    dueDate: '2',
-    icon: Database,
-    field: 'backend',
-  },
-  {
-    id: 6,
-    titleKey: 'backendTask3',
-    descKey: 'backendTask3Desc',
-    difficulty: 'senior',
-    xp: 400,
-    status: 'done',
-    dueDate: '0',
-    icon: Server,
-    field: 'backend',
-  },
-  // AI tasks
-  {
-    id: 7,
-    titleKey: 'aiTask1',
-    descKey: 'aiTask1Desc',
-    difficulty: 'senior',
-    xp: 400,
-    status: 'progress',
-    dueDate: '5',
-    icon: Brain,
-    field: 'ai',
-  },
-  {
-    id: 8,
-    titleKey: 'aiTask2',
-    descKey: 'aiTask2Desc',
-    difficulty: 'mid',
-    xp: 250,
-    status: 'todo',
-    dueDate: '3',
-    icon: Database,
-    field: 'ai',
-  },
-  {
-    id: 9,
-    titleKey: 'aiTask3',
-    descKey: 'aiTask3Desc',
-    difficulty: 'mid',
-    xp: 300,
-    status: 'done',
-    dueDate: '0',
-    icon: Brain,
-    field: 'ai',
-  },
-  // Cybersecurity tasks
-  {
-    id: 10,
-    titleKey: 'cyberTask1',
-    descKey: 'cyberTask1Desc',
-    difficulty: 'mid',
-    xp: 250,
-    status: 'progress',
-    dueDate: '3',
-    icon: Shield,
-    field: 'cybersecurity',
-  },
-  {
-    id: 11,
-    titleKey: 'cyberTask2',
-    descKey: 'cyberTask2Desc',
-    difficulty: 'senior',
-    xp: 350,
-    status: 'todo',
-    dueDate: '4',
-    icon: Bug,
-    field: 'cybersecurity',
-  },
-  {
-    id: 12,
-    titleKey: 'cyberTask3',
-    descKey: 'cyberTask3Desc',
-    difficulty: 'junior',
-    xp: 150,
-    status: 'done',
-    dueDate: '0',
-    icon: Shield,
-    field: 'cybersecurity',
-  },
-];
+const getXPFromDifficulty = (difficulty: string) => {
+  switch (difficulty.toLowerCase()) {
+    case 'junior': return 100;
+    case 'mid': return 250;
+    case 'senior': return 400;
+    default: return 100;
+  }
+};
+
+const getIconFromField = (field: string) => {
+  switch (field) {
+    case 'ai': return Brain;
+    case 'cybersecurity': return Shield;
+    case 'backend': return Server;
+    default: return Code2;
+  }
+};
 
 export const TaskPanel = ({ field }: TaskPanelProps) => {
   const { t, language } = useLanguage();
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
   const [filter, setFilter] = useState<'all' | 'todo' | 'progress' | 'done'>('all');
+  const [tasks, setTasks] = useState<Task[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const tasks = allTasks.filter((task) => task.field === field);
+  useEffect(() => {
+    fetchTasks();
+  }, []);
+
+  const fetchTasks = async () => {
+    try {
+      const res = await api.get("/task/list");
+      // Map backend tasks to frontend structure
+      const mappedTasks = res.data.map((item: any) => ({
+        id: item.id,
+        title: item.title,
+        description: item.description,
+        difficulty: item.difficulty || 'junior',
+        xp: getXPFromDifficulty(item.difficulty || 'junior'),
+        status: (item.status === 'active' ? 'progress' : item.status) as 'todo' | 'progress' | 'done',
+        dueDate: '3', // Default for now
+        icon: getIconFromField(field),
+        field: field
+      }));
+      setTasks(mappedTasks);
+    } catch (error) {
+      console.error("Failed to fetch tasks:", error);
+      toast.error("Could not load tasks");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const filteredTasks = filter === 'all' ? tasks : tasks.filter((t) => t.status === filter);
 
   const groupedTasks = {
@@ -186,17 +96,25 @@ export const TaskPanel = ({ field }: TaskPanelProps) => {
   };
 
   const getTaskTitle = (task: Task): string => {
-    return t[task.titleKey as keyof typeof t] as string;
+    return task.title;
   };
 
   const getTaskDesc = (task: Task): string => {
-    return t[task.descKey as keyof typeof t] as string;
+    return task.description;
   };
 
   const getDueText = (dueDate: string): string => {
     if (dueDate === '0') return t.completed;
     return language === 'tr' ? `${dueDate} gün` : `${dueDate} days`;
   };
+
+  if (isLoading) {
+    return (
+      <div className="h-full flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+      </div>
+    );
+  }
 
   return (
     <div className="h-full flex flex-col">
