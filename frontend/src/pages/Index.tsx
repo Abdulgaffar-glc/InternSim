@@ -1,21 +1,25 @@
-import { useState } from 'react';
-import { AuthScreen } from '@/components/AuthScreen';
-import { Sidebar } from '@/components/Sidebar';
-import { TaskPanel } from '@/components/TaskPanel';
-import { MentorChat } from '@/components/MentorChat';
-import { PerformanceDashboard } from '@/components/PerformanceDashboard';
-import { SubmissionHub } from '@/components/SubmissionHub';
-import { OnboardingFlow, InternshipField, InternshipLevel } from '@/components/OnboardingFlow';
-import { LanguageProvider } from '@/contexts/LanguageContext';
+import { useState } from "react";
+import { AuthScreen } from "@/components/AuthScreen";
+import { Sidebar } from "@/components/Sidebar";
+import { TaskPanel } from "@/components/TaskPanel";
+import { MentorChat } from "@/components/MentorChat";
+import { PerformanceDashboard } from "@/components/PerformanceDashboard";
+import { SubmissionHub } from "@/components/SubmissionHub";
+import {
+  OnboardingFlow,
+  InternshipField,
+  InternshipLevel,
+} from "@/components/OnboardingFlow";
+import { LanguageProvider } from "@/contexts/LanguageContext";
 
-type ActiveMenu = 'tasks' | 'chat' | 'performance' | 'submission';
+type ActiveMenu = "tasks" | "chat" | "performance" | "submission";
 
 const IndexContent = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isOnboarded, setIsOnboarded] = useState(false);
-  const [activeMenu, setActiveMenu] = useState<ActiveMenu>('tasks');
-  const [userField, setUserField] = useState<InternshipField>('frontend');
-  const [userLevel, setUserLevel] = useState<InternshipLevel>('junior');
+  const [activeMenu, setActiveMenu] = useState<ActiveMenu>("tasks");
+  const [userField, setUserField] = useState<InternshipField>("frontend");
+  const [userLevel, setUserLevel] = useState<InternshipLevel>("junior");
 
   const handleLogin = () => {
     setIsAuthenticated(true);
@@ -26,7 +30,10 @@ const IndexContent = () => {
     setIsOnboarded(false);
   };
 
-  const handleOnboardingComplete = (field: InternshipField, level: InternshipLevel) => {
+  const handleOnboardingComplete = (
+    field: InternshipField,
+    level: InternshipLevel,
+  ) => {
     setUserField(field);
     setUserLevel(level);
     setIsOnboarded(true);
@@ -42,13 +49,13 @@ const IndexContent = () => {
 
   const renderContent = () => {
     switch (activeMenu) {
-      case 'tasks':
+      case "tasks":
         return <TaskPanel field={userField} level={userLevel} />;
-      case 'chat':
+      case "chat":
         return <MentorChat />;
-      case 'performance':
+      case "performance":
         return <PerformanceDashboard />;
-      case 'submission':
+      case "submission":
         return <SubmissionHub />;
       default:
         return <TaskPanel field={userField} level={userLevel} />;
@@ -65,9 +72,7 @@ const IndexContent = () => {
         userLevel={userLevel}
       />
       <main className="flex-1 p-6 overflow-y-auto">
-        <div className="h-full animate-fade-in">
-          {renderContent()}
-        </div>
+        <div className="h-full animate-fade-in">{renderContent()}</div>
       </main>
     </div>
   );
