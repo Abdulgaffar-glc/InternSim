@@ -7,8 +7,9 @@ dist/
 venv/
 .env
 backend/__pycache__/
-backend/app/__pycache__/
-backend/app/models/__pycache__/
-backend/app/routes/__pycache__/
-backend/app/schemas/__pycache__/
+backend/__pycache__
+backend/app/__pycache__
+backend/app/models/__pycache__
+backend/app/routes/__pycache__
+backend/app/schemas/__pycache__
 
