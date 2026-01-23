@@ -46,7 +46,7 @@ Return ONLY valid JSON in the following structure.
 Do NOT include markdown, code blocks, or explanations.
 
 {{
-  "score": number (0-10),
+  "score": number (0-100),
   "strengths": [string],
   "weaknesses": [string],
   "mentor_feedback": string

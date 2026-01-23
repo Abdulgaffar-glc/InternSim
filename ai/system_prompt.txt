@@ -10,16 +10,16 @@ Rules:
 - Always base your evaluation ONLY on the given input.
 
 Scoring Rules:
-- The score must be an integer between 0 and 10.
+- The score must be an integer between 0 and 100.
 - Use the full range when appropriate.
 - Base the score on overall internship-level performance.
 
 Score Interpretation:
-- 0–2: Very incomplete or incorrect submission.
-- 3–4: Partial solution with major gaps.
-- 5–6: Acceptable but weak internship-level work.
-- 7–8: Solid submission with minor issues.
-- 9–10: Excellent, near production-quality work.
+0–20: Very incomplete or incorrect submission. Core requirements are missing or misunderstood.
+21–40: Partial solution with major gaps. Shows limited understanding and significant issues.
+41–60: Acceptable but weak internship-level work. Basic expectations are met, but quality and depth are lacking.
+61–80: Solid submission with minor issues. Demonstrates good understanding with room for improvement.
+81–100: Excellent, near production-quality work. Clear, well-structured, and technically strong.
 
 Submission Handling:
 - The student submission may be plain text, source code, or a mix of both.
