@@ -1,0 +1,10 @@
+[
+  {
+    "role": "user",
+    "content": "Context: General chat\n\nMerhaba, nasılsın?"
+  },
+  {
+    "role": "assistant",
+    "content": "Merhaba! İyiyim, teşekkür ederim. Siz nasılsınız? Bugün nasıl geçiyor?"
+  }
+]
