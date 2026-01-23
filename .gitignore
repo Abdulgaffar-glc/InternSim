@@ -3,3 +3,6 @@
 .env.*
 config.js
 secrets.json
+venv/
+__pycache__/
+*.pyc
