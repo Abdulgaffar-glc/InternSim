@@ -11,6 +11,7 @@ import {
   InternshipLevel,
 } from "@/components/OnboardingFlow";
 import { LanguageProvider } from "@/contexts/LanguageContext";
+import { useAuth } from "@/contexts/AuthContext";
 
 type ActiveMenu = "tasks" | "chat" | "performance" | "submission";
 
@@ -20,14 +21,16 @@ const DashboardContent = () => {
   const [activeMenu, setActiveMenu] = useState<ActiveMenu>("tasks");
   const [userField, setUserField] = useState<InternshipField>("frontend");
   const [userLevel, setUserLevel] = useState<InternshipLevel>("junior");
+  const { logout } = useAuth();
 
   const handleLogout = () => {
-    navigate("/auth");
+    logout();
+    navigate("/auth", { replace: true });
   };
 
   const handleOnboardingComplete = (
     field: InternshipField,
-    level: InternshipLevel,
+    level: InternshipLevel
   ) => {
     setUserField(field);
     setUserLevel(level);
