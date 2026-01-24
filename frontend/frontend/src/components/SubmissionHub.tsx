@@ -189,7 +189,7 @@ export const SubmissionHub = () => {
         <p className="text-muted-foreground mt-1">{t.submissionDesc}</p>
       </div>
 
-      <div className="flex-1 grid grid-cols-2 gap-6 min-h-0">
+      <div className="flex-1 flex flex-col lg:grid lg:grid-cols-2 gap-6 min-h-0 overflow-y-auto lg:overflow-hidden">
         {/* Left: Code Editor */}
         <div className="flex flex-col min-h-0">
           {/* Task Selection */}
@@ -266,7 +266,7 @@ export const SubmissionHub = () => {
           )}
 
           {/* Code Editor */}
-          <div className="glass-card p-4 flex-1 flex flex-col min-h-0">
+          <div className="glass-card p-4 flex-1 flex flex-col min-h-[500px] lg:min-h-0">
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
                 <Terminal className="w-5 h-5 text-primary" />

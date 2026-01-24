@@ -224,9 +224,9 @@ export const MentorChat = () => {
   };
 
   return (
-    <div className="h-full flex gap-6">
+    <div className="h-full flex flex-col lg:flex-row gap-6">
       {/* Conversations Sidebar */}
-      <div className="w-80 flex-shrink-0 glass-card p-4 flex flex-col">
+      <div className="w-full lg:w-80 h-[300px] lg:h-full flex-shrink-0 glass-card p-4 flex flex-col">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-semibold text-foreground">{t.conversations}</h2>
           <button
