@@ -205,7 +205,7 @@ export const PerformanceDashboard = () => {
       {/* Level Card */}
       <div className="glass-card p-6 neon-border relative overflow-hidden">
         <div className="absolute top-0 right-0 w-64 h-64 bg-primary/10 rounded-full blur-[80px]" />
-        <div className="relative flex items-center gap-6">
+        <div className="relative flex flex-col md:flex-row items-center gap-6 text-center md:text-left">
           <div className="w-24 h-24 rounded-2xl bg-primary/20 flex items-center justify-center neon-glow">
             <span className="text-4xl font-bold text-gradient-primary">{stats.level}</span>
           </div>
@@ -218,7 +218,7 @@ export const PerformanceDashboard = () => {
                 {t.level} {stats.level}
               </span>
             </div>
-            <div className="flex items-center gap-4 mb-3">
+            <div className="flex items-center justify-center md:justify-start gap-4 mb-3">
               <div className="flex items-center gap-1">
                 <Zap className="w-5 h-5 text-primary" />
                 <span className="text-xl font-semibold text-foreground">
@@ -242,7 +242,7 @@ export const PerformanceDashboard = () => {
       </div>
 
       {/* Metrics */}
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {metrics.map((metric) => {
           const Icon = metric.icon;
           return (
@@ -277,7 +277,7 @@ export const PerformanceDashboard = () => {
       </div>
 
       {/* Charts Row */}
-      <div className="grid grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Skills Radar */}
         <div className="glass-card p-6">
           <h3 className="text-lg font-semibold text-foreground mb-4">
@@ -403,7 +403,7 @@ export const PerformanceDashboard = () => {
         <h3 className="text-lg font-semibold text-foreground mb-4">
           {language === "tr" ? "Görev Özeti" : "Task Summary"}
         </h3>
-        <div className="grid grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           <div className="text-center p-4 bg-success/10 rounded-lg">
             <p className="text-3xl font-bold text-success">{stats.task_stats.completed}</p>
             <p className="text-sm text-muted-foreground mt-1">

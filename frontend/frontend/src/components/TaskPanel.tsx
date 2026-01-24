@@ -179,12 +179,12 @@ export const TaskPanel = ({ field, level }: TaskPanelProps) => {
   return (
     <div className="h-full flex flex-col">
       {/* Header */}
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
         <div>
           <h1 className="text-2xl font-bold text-foreground">{t.taskPanelTitle}</h1>
           <p className="text-muted-foreground mt-1">{t.taskPanelDesc}</p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           <button
             onClick={generateNewTask}
             disabled={isGenerating}
@@ -218,7 +218,7 @@ export const TaskPanel = ({ field, level }: TaskPanelProps) => {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-3 gap-4 mb-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
         <div className="stat-card">
           <div className="flex items-center justify-between">
             <div>
@@ -288,7 +288,7 @@ export const TaskPanel = ({ field, level }: TaskPanelProps) => {
                   <Icon className="w-6 h-6 text-primary" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-start justify-between gap-4">
+                  <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
                     <div>
                       <h3 className="font-semibold text-foreground group-hover:text-primary transition-colors">
                         {task.title}
@@ -378,7 +378,7 @@ export const TaskPanel = ({ field, level }: TaskPanelProps) => {
                 </div>
               )}
 
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div className="p-4 rounded-lg bg-muted">
                   <p className="text-xs text-muted-foreground mb-1">{t.difficulty}</p>
                   <span className={`badge ${difficultyConfig[selectedTask.difficulty]?.class || 'badge-mid'}`}>
@@ -400,7 +400,7 @@ export const TaskPanel = ({ field, level }: TaskPanelProps) => {
                 </div>
               </div>
 
-              <div className="flex gap-3">
+              <div className="flex flex-col sm:flex-row gap-3">
                 {selectedTask.status === 'todo' && (
                   <button
                     onClick={() => updateTaskStatus(selectedTask.id, 'progress')}
