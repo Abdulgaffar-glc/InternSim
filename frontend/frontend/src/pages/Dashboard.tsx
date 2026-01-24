@@ -27,6 +27,7 @@ const DashboardContent = () => {
   const [userField, setUserField] = useState<InternshipField>("frontend");
   const [userLevel, setUserLevel] = useState<InternshipLevel>("junior");
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   // Check if user already has field and level set
   useEffect(() => {
@@ -158,7 +159,7 @@ const DashboardContent = () => {
             <span className="font-bold text-gradient-primary">InternSim</span>
           </div>
           
-          <Sheet>
+          <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
             <SheetTrigger asChild>
               <button className="p-2 hover:bg-muted rounded-md">
                 <Menu className="w-6 h-6" />
@@ -167,7 +168,10 @@ const DashboardContent = () => {
             <SheetContent side="left" className="p-0 w-80 border-r-sidebar-border bg-sidebar">
               <Sidebar
                 activeMenu={activeMenu}
-                onMenuChange={(menu) => setActiveMenu(menu as ActiveMenu)}
+                onMenuChange={(menu) => {
+                  setActiveMenu(menu as ActiveMenu);
+                  setIsMobileMenuOpen(false);
+                }}
                 onLogout={handleLogout}
                 userField={userField}
                 userLevel={userLevel}
