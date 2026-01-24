@@ -137,7 +137,7 @@ const DashboardContent = () => {
   return (
     <div className="h-screen bg-background flex overflow-hidden">
       {/* Desktop Sidebar */}
-      <div className="hidden md:flex">
+      <div className="hidden lg:flex">
         <Sidebar
           activeMenu={activeMenu}
           onMenuChange={(menu) => setActiveMenu(menu as ActiveMenu)}
@@ -151,7 +151,7 @@ const DashboardContent = () => {
 
       <main className="flex-1 flex flex-col h-full overflow-hidden">
         {/* Mobile Header */}
-        <div className="md:hidden p-4 border-b border-border flex items-center justify-between bg-sidebar">
+        <div className="lg:hidden p-4 border-b border-border flex items-center justify-between bg-sidebar">
            <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center neon-glow">
               <Terminal className="w-4 h-4 text-primary" />

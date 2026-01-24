@@ -80,7 +80,7 @@ const Landing = () => {
             </div>
 
             {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center gap-4">
+            <div className="hidden lg:flex items-center gap-4">
               <LanguageSwitcher />
               {isLoggedIn ? (
                 <Link to="/dashboard">
@@ -107,7 +107,7 @@ const Landing = () => {
             </div>
 
             {/* Mobile Navigation */}
-            <div className="md:hidden flex items-center gap-4">
+            <div className="lg:hidden flex items-center gap-4">
               <LanguageSwitcher />
               <Sheet>
                 <SheetTrigger asChild>

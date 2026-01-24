@@ -141,7 +141,7 @@ export const Sidebar = ({
        {!isMobile && onCollapseToggle && (
         <button 
           onClick={onCollapseToggle}
-          className="absolute -right-3 top-24 z-50 bg-background border border-border rounded-full p-1 text-muted-foreground hover:text-foreground hidden md:flex"
+          className="absolute -right-3 top-24 z-50 bg-background border border-border rounded-full p-1 text-muted-foreground hover:text-foreground hidden lg:flex"
         >
           {collapsed ? <div className="w-4 h-4">{">"}</div> : <div className="w-4 h-4">{"<"}</div>}
         </button>
