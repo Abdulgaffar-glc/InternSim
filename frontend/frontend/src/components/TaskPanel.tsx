@@ -281,7 +281,7 @@ export const TaskPanel = ({ field, level }: TaskPanelProps) => {
             <div
               key={task.id}
               onClick={() => setSelectedTask(task)}
-              className="task-card group min-h-[300px] md:min-h-0 flex flex-col justify-between"
+              className="task-card group min-h-[550px] flex flex-col justify-between"
             >
               <div className="flex flex-col md:flex-row items-start gap-4 flex-1">
                 <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0 group-hover:bg-primary/20 transition-colors">
