@@ -26,7 +26,8 @@ const DashboardContent = () => {
   const [activeMenu, setActiveMenu] = useState<ActiveMenu>("tasks");
   const [userField, setUserField] = useState<InternshipField>("frontend");
   const [userLevel, setUserLevel] = useState<InternshipLevel>("junior");
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  // Default to collapsed on smaller screens (tablets/small laptops)
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(() => window.innerWidth < 1280);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   // Check if user already has field and level set

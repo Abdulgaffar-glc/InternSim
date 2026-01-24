@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Terminal, ClipboardList, MessageSquare, BarChart3, Upload, LogOut, User, Sparkles, Code2, Server, Brain, Shield } from 'lucide-react';
+import { Terminal, ClipboardList, MessageSquare, BarChart3, Upload, LogOut, User, Sparkles, Code2, Server, Brain, Shield, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { LanguageSwitcher } from './LanguageSwitcher';
 import { InternshipField, InternshipLevel } from './OnboardingFlow';
@@ -141,9 +141,9 @@ export const Sidebar = ({
        {!isMobile && onCollapseToggle && (
         <button 
           onClick={onCollapseToggle}
-          className="absolute -right-3 top-24 z-50 bg-background border border-border rounded-full p-1 text-muted-foreground hover:text-foreground hidden lg:flex"
+          className="absolute -right-3 top-24 z-50 bg-background border border-border rounded-full p-1.5 text-muted-foreground hover:text-foreground hover:bg-muted shadow-sm hidden lg:flex transition-all"
         >
-          {collapsed ? <div className="w-4 h-4">{">"}</div> : <div className="w-4 h-4">{"<"}</div>}
+          {collapsed ? <ChevronRight className="w-3.5 h-3.5" /> : <ChevronLeft className="w-3.5 h-3.5" />}
         </button>
        )}
 
