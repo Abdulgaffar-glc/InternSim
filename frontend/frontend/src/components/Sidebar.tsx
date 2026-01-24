@@ -117,7 +117,7 @@ export const Sidebar = ({
     ? Math.round((userData.xp_progress / userData.xp_needed) * 100)
     : 0;
 
-  const sidebarClassInfo = isMobile ? "w-full h-full bg-sidebar flex flex-col" : `h-screen bg-sidebar border-r border-sidebar-border flex flex-col transition-all duration-300 ${collapsed ? "w-20" : "w-72"}`;
+  const sidebarClassInfo = isMobile ? "w-full h-full bg-sidebar flex flex-col" : `relative h-screen bg-sidebar border-r border-sidebar-border flex flex-col transition-all duration-300 ${collapsed ? "w-20" : "w-72"}`;
 
   return (
     <div className={sidebarClassInfo}>
