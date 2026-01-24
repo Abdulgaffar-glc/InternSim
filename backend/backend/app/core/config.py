@@ -2,6 +2,7 @@
 Configuration settings for the application
 """
 import os
+from typing import List
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -24,5 +25,12 @@ class Settings:
     IO_NET_MODEL_ID: str = os.getenv("IO_NET_MODEL_ID", "meta-llama/Llama-3.3-70B-Instruct")
     IO_NET_API_URL: str = os.getenv("IO_NET_API_URL", "https://api.intelligence.io.solutions/api/v1/chat/completions")
     IOINTELLIGENCE_API_KEY: str = os.getenv("IOINTELLIGENCE_API_KEY", "")
+
+    # CORS
+    BACKEND_CORS_ORIGINS: List[str] = [
+        origin.strip() 
+        for origin in os.getenv("BACKEND_CORS_ORIGINS", "").split(",") 
+        if origin.strip()
+    ] or ["*"]
 
 settings = Settings()

@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 
 from .db_dep import get_db
+from .core.config import settings
 from .routes import auth
 from backend.app.models.user import Base
 from backend.app.models import User, ChatSession, ChatMessage, UserTask, Internship, Task, Submission, Evaluation
@@ -23,7 +24,7 @@ app = FastAPI(title="Intern Sim API", version="2.0.0")
 # Enable CORS for frontend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # In production, specify exact origins
+    allow_origins=settings.BACKEND_CORS_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
