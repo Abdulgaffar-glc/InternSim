@@ -182,6 +182,9 @@ ACCESS_TOKEN_EXPIRE_MINUTES=30
 
 IO_NET_API_KEY=<your-api-key>
 IO_NET_MODEL_ID=meta-llama/Llama-3.3-70B-Instruct
+
+# CORS Configuration
+BACKEND_CORS_ORIGINS=http://localhost:8080,http://localhost:5173,http://localhost:3000
 ```
 
 ### Frontend .env

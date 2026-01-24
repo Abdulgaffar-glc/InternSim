@@ -115,6 +115,9 @@ ACCESS_TOKEN_EXPIRE_MINUTES=30
 IO_NET_API_KEY=sizin-api-keyiniz
 IO_NET_MODEL_ID=meta-llama/Llama-3.3-70B-Instruct
 IO_NET_API_URL=https://api.intelligence.io.solutions/api/v1/chat/completions
+
+# CORS Configuration
+BACKEND_CORS_ORIGINS=http://localhost:8080,http://localhost:5173,http://localhost:3000
 ```
 
 **SECRET_KEY oluşturmak için:**
@@ -171,14 +174,14 @@ npm run dev
 ```
 VITE v5.x.x  ready in xxx ms
 
-➜  Local:   http://localhost:5173/
+➜  Local:   http://localhost:8080/
 ```
 
 ---
 
 ## 🚀 Adım 5: Uygulamayı Kullanma
 
-1. Tarayıcınızda açın: **http://localhost:5173**
+1. Tarayıcınızda açın: **http://localhost:8080**
 2. "Kayıt Ol" butonuna tıklayın
 3. Email ve şifre ile kayıt olun
 4. Staj alanı ve seviye seçin
