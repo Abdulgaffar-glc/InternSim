@@ -59,6 +59,7 @@ TumProje/
 ├── frontend/
 │   └── frontend/
 │       └── src/
+├── .env
 ```
 
 ---
@@ -94,9 +95,9 @@ pip install -r requirements.txt
 pip install fastapi uvicorn sqlalchemy psycopg2-binary python-jose passlib bcrypt httpx python-dotenv pydantic email-validator
 ```
 
-### 3.3 Environment Dosyası (.env)
+### 3.3 Global Environment Dosyası (.env)
 
-`backend/.env` dosyası oluşturun:
+Ana dizinde (`TumProje/.env`) bir dosya oluşturun. Bu dosya hem Backend hem de Frontend tarafından kullanılacaktır:
 
 ```env
 # Database Configuration
@@ -118,6 +119,9 @@ IO_NET_API_URL=https://api.intelligence.io.solutions/api/v1/chat/completions
 
 # CORS Configuration
 BACKEND_CORS_ORIGINS=http://localhost:8080,http://localhost:5173,http://localhost:3000
+
+# Frontend Configuration
+VITE_API_URL=http://localhost:8000
 ```
 
 **SECRET_KEY oluşturmak için:**
@@ -158,11 +162,7 @@ npm install
 
 ### 4.2 Environment Dosyası
 
-`frontend/frontend/.env` dosyası oluşturun:
-
-```env
-VITE_API_URL=http://localhost:8000
-```
+Frontend uygulaması ana dizindeki `.env` dosyasını otomatik olarak kullandığı için **ekstra bir işlem yapmanıza gerek yoktur.**
 
 ### 4.3 Frontend'i Başlatma
 

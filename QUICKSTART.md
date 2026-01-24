@@ -2,7 +2,10 @@
 
 ## 🚀 İlk Kurulum (Sadece Bir Kez)
 
-### 1. PostgreSQL Database Oluştur
+### 1. Environment ve Database Hazırlığı
+Ana dizinde `.env` dosyasını oluşturun (Bkz: `README.md`).
+
+**PostgreSQL Database Oluştur:**
 ```powershell
 # PostgreSQL'e bağlan
 psql -U postgres
