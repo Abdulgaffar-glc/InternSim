@@ -242,7 +242,7 @@ export const PerformanceDashboard = () => {
       </div>
 
       {/* Metrics */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-3 gap-4">
         {metrics.map((metric) => {
           const Icon = metric.icon;
           return (
@@ -277,7 +277,7 @@ export const PerformanceDashboard = () => {
       </div>
 
       {/* Charts Row */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-2 gap-6">
         {/* Skills Radar */}
         <div className="glass-card p-6">
           <h3 className="text-lg font-semibold text-foreground mb-4">
@@ -403,7 +403,7 @@ export const PerformanceDashboard = () => {
         <h3 className="text-lg font-semibold text-foreground mb-4">
           {language === "tr" ? "Görev Özeti" : "Task Summary"}
         </h3>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-4 gap-4">
           <div className="text-center p-4 bg-success/10 rounded-lg">
             <p className="text-3xl font-bold text-success">{stats.task_stats.completed}</p>
             <p className="text-sm text-muted-foreground mt-1">

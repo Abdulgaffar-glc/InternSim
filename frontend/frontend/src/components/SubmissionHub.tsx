@@ -189,7 +189,7 @@ export const SubmissionHub = () => {
         <p className="text-muted-foreground mt-1">{t.submissionDesc}</p>
       </div>
 
-      <div className="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-6 min-h-0">
+      <div className="flex-1 grid grid-cols-2 gap-6 min-h-0">
         {/* Left: Code Editor */}
         <div className="flex flex-col min-h-0">
           {/* Task Selection */}

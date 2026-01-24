@@ -179,16 +179,16 @@ export const TaskPanel = ({ field, level }: TaskPanelProps) => {
   return (
     <div className="h-full flex flex-col">
       {/* Header */}
-      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-6">
+      <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-2xl font-bold text-foreground">{t.taskPanelTitle}</h1>
           <p className="text-muted-foreground mt-1">{t.taskPanelDesc}</p>
         </div>
-        <div className="flex flex-wrap gap-2 w-full md:w-auto">
+        <div className="flex gap-2">
           <button
             onClick={generateNewTask}
             disabled={isGenerating}
-            className="btn-primary flex items-center gap-2 flex-grow md:flex-grow-0 justify-center"
+            className="btn-primary flex items-center gap-2"
           >
             {isGenerating ? (
               <>
@@ -202,25 +202,23 @@ export const TaskPanel = ({ field, level }: TaskPanelProps) => {
               </>
             )}
           </button>
-          <div className="flex gap-2 bg-secondary/50 p-1 rounded-lg w-full md:w-auto overflow-x-auto">
-            {(['all', 'todo', 'progress', 'done'] as const).map((f) => (
+          {(['all', 'todo', 'progress', 'done'] as const).map((f) => (
             <button
               key={f}
               onClick={() => setFilter(f)}
-              className={`px-4 py-2 rounded-md text-sm font-medium transition-all duration-300 whitespace-nowrap flex-1 ${filter === f
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 ${filter === f
                 ? 'bg-primary text-primary-foreground neon-glow'
-                : 'bg-transparent text-secondary-foreground hover:bg-white/5'
+                : 'bg-secondary text-secondary-foreground hover:bg-secondary/80'
                 }`}
             >
               {f === 'all' ? t.all : statusConfig[f].label}
             </button>
           ))}
-          </div>
         </div>
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+      <div className="grid grid-cols-3 gap-4 mb-6">
         <div className="stat-card">
           <div className="flex items-center justify-between">
             <div>
@@ -380,7 +378,7 @@ export const TaskPanel = ({ field, level }: TaskPanelProps) => {
                 </div>
               )}
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="grid grid-cols-3 gap-4">
                 <div className="p-4 rounded-lg bg-muted">
                   <p className="text-xs text-muted-foreground mb-1">{t.difficulty}</p>
                   <span className={`badge ${difficultyConfig[selectedTask.difficulty]?.class || 'badge-mid'}`}>
@@ -406,7 +404,7 @@ export const TaskPanel = ({ field, level }: TaskPanelProps) => {
                 {selectedTask.status === 'todo' && (
                   <button
                     onClick={() => updateTaskStatus(selectedTask.id, 'progress')}
-                    className="btn-primary flex-1 py-3"
+                    className="btn-primary flex-1"
                   >
                     {t.startTask}
                   </button>
@@ -428,7 +426,7 @@ export const TaskPanel = ({ field, level }: TaskPanelProps) => {
                 )}
                 <button
                   onClick={() => setSelectedTask(null)}
-                  className="btn-secondary py-3 flex-1 md:flex-none"
+                  className="btn-secondary"
                 >
                   {t.close}
                 </button>
