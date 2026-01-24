@@ -24,6 +24,8 @@ interface SidebarProps {
   onLogout: () => void;
   userField: InternshipField;
   userLevel: InternshipLevel;
+  isOpen?: boolean;
+  onClose?: () => void;
 }
 
 const fieldIcons = {
@@ -40,7 +42,7 @@ const fieldColors = {
   cybersecurity: 'text-red-400',
 };
 
-export const Sidebar = ({ activeMenu, onMenuChange, onLogout, userField, userLevel }: SidebarProps) => {
+export const Sidebar = ({ activeMenu, onMenuChange, onLogout, userField, userLevel, isOpen = false, onClose }: SidebarProps) => {
   const { t } = useLanguage();
   const [userData, setUserData] = useState<UserData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -106,111 +108,139 @@ export const Sidebar = ({ activeMenu, onMenuChange, onLogout, userField, userLev
     : 0;
 
   return (
-    <div className="w-72 h-screen bg-sidebar border-r border-sidebar-border flex flex-col">
-      {/* Logo */}
-      <div className="p-6 border-b border-sidebar-border">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-primary/20 flex items-center justify-center neon-glow">
-              <Terminal className="w-5 h-5 text-primary" />
-            </div>
-            <div>
-              <h1 className="text-xl font-bold text-gradient-primary">{t.appName}</h1>
-              <p className="text-xs text-muted-foreground">{t.virtualInternship}</p>
-            </div>
-          </div>
-          <LanguageSwitcher />
-        </div>
-      </div>
+    <>
+      {/* Mobile Overlay */}
+      {isOpen && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-40 md:hidden"
+          onClick={onClose}
+        />
+      )}
 
-      {/* User Profile */}
-      <div className="p-4 mx-4 mt-4 rounded-xl bg-muted/50 border border-border">
-        <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center border-2 border-primary/50">
-            <User className="w-6 h-6 text-primary" />
-          </div>
-          <div className="flex-1 min-w-0">
-            {loading ? (
-              <div className="animate-pulse">
-                <div className="h-4 bg-muted rounded w-24 mb-1"></div>
-                <div className="h-3 bg-muted rounded w-20"></div>
+      {/* Sidebar Container */}
+      <div className={`
+        fixed md:static inset-y-0 left-0 z-50
+        w-72 h-screen bg-sidebar border-r border-sidebar-border flex flex-col
+        transition-transform duration-300 ease-in-out md:transform-none
+        ${isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
+      `}>
+        {/* Logo */}
+        <div className="p-6 border-b border-sidebar-border">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-primary/20 flex items-center justify-center neon-glow">
+                <Terminal className="w-5 h-5 text-primary" />
               </div>
-            ) : (
-              <>
-                <h3 className="font-semibold text-foreground truncate">
-                  {userData?.name || 'Stajyer'}
-                </h3>
-                <div className="flex items-center gap-2">
-                  <FieldIcon className={`w-3 h-3 ${fieldColors[displayField] || 'text-primary'}`} />
-                  <p className="text-xs text-muted-foreground">
-                    {levelLabels[displayLevel]} {fieldLabels[displayField]}
-                  </p>
-                </div>
-              </>
+              <div>
+                <h1 className="text-xl font-bold text-gradient-primary">{t.appName}</h1>
+                <p className="text-xs text-muted-foreground">{t.virtualInternship}</p>
+              </div>
+            </div>
+            <LanguageSwitcher />
+            {/* Mobile Close Button */}
+            {onClose && (
+              <button 
+                onClick={onClose}
+                className="md:hidden p-1 hover:bg-white/10 rounded-lg transition-colors"
+              >
+                <LogOut className="w-5 h-5" />
+              </button>
             )}
           </div>
         </div>
-        <div className="mt-3 pt-3 border-t border-border">
-          <div className="flex items-center justify-between text-sm">
-            <span className="text-muted-foreground">{t.level}</span>
-            <div className="flex items-center gap-1.5">
-              <Sparkles className="w-4 h-4 text-primary" />
-              <span className="font-semibold text-primary">
-                {loading ? '--' : userData?.level || 1}
-              </span>
+
+        {/* User Profile */}
+        <div className="p-4 mx-4 mt-4 rounded-xl bg-muted/50 border border-border">
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center border-2 border-primary/50">
+              <User className="w-6 h-6 text-primary" />
+            </div>
+            <div className="flex-1 min-w-0">
+              {loading ? (
+                <div className="animate-pulse">
+                  <div className="h-4 bg-muted rounded w-24 mb-1"></div>
+                  <div className="h-3 bg-muted rounded w-20"></div>
+                </div>
+              ) : (
+                <>
+                  <h3 className="font-semibold text-foreground truncate">
+                    {userData?.name || 'Stajyer'}
+                  </h3>
+                  <div className="flex items-center gap-2">
+                    <FieldIcon className={`w-3 h-3 ${fieldColors[displayField] || 'text-primary'}`} />
+                    <p className="text-xs text-muted-foreground">
+                      {levelLabels[displayLevel]} {fieldLabels[displayField]}
+                    </p>
+                  </div>
+                </>
+              )}
             </div>
           </div>
-          <div className="mt-2">
-            <div className="flex items-center justify-between text-xs mb-1">
-              <span className="text-muted-foreground">XP</span>
-              <span className="text-foreground">
-                {loading ? '--' : `${userData?.current_xp?.toLocaleString() || 0} / ${userData?.next_level_xp?.toLocaleString() || 500}`}
-              </span>
+          <div className="mt-3 pt-3 border-t border-border">
+            <div className="flex items-center justify-between text-sm">
+              <span className="text-muted-foreground">{t.level}</span>
+              <div className="flex items-center gap-1.5">
+                <Sparkles className="w-4 h-4 text-primary" />
+                <span className="font-semibold text-primary">
+                  {loading ? '--' : userData?.level || 1}
+                </span>
+              </div>
             </div>
-            <div className="progress-bar">
-              <div
-                className="progress-fill transition-all duration-500"
-                style={{ width: `${xpPercentage}%` }}
-              />
+            <div className="mt-2">
+              <div className="flex items-center justify-between text-xs mb-1">
+                <span className="text-muted-foreground">XP</span>
+                <span className="text-foreground">
+                  {loading ? '--' : `${userData?.current_xp?.toLocaleString() || 0} / ${userData?.next_level_xp?.toLocaleString() || 500}`}
+                </span>
+              </div>
+              <div className="progress-bar">
+                <div
+                  className="progress-fill transition-all duration-500"
+                  style={{ width: `${xpPercentage}%` }}
+                />
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      {/* Navigation */}
-      <nav className="flex-1 p-4 space-y-1 overflow-y-auto scrollbar-cyber">
-        <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider px-4 mb-3">
-          {t.modules}
-        </p>
-        {menuItems.map((item) => {
-          const Icon = item.icon;
-          const isActive = activeMenu === item.id;
-          return (
-            <button
-              key={item.id}
-              onClick={() => onMenuChange(item.id)}
-              className={`sidebar-item w-full ${isActive ? 'active' : ''}`}
-            >
-              <Icon className={`w-5 h-5 ${isActive ? 'text-primary' : ''}`} />
-              <span className={isActive ? 'text-primary font-medium' : ''}>{item.label}</span>
-              {isActive && (
-                <div className="ml-auto w-2 h-2 rounded-full bg-primary animate-pulse-glow" />
-              )}
-            </button>
-          );
-        })}
-      </nav>
+        {/* Navigation */}
+        <nav className="flex-1 p-4 space-y-1 overflow-y-auto scrollbar-cyber">
+          <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider px-4 mb-3">
+            {t.modules}
+          </p>
+          {menuItems.map((item) => {
+            const Icon = item.icon;
+            const isActive = activeMenu === item.id;
+            return (
+              <button
+                key={item.id}
+                onClick={() => {
+                  onMenuChange(item.id);
+                  onClose?.(); // Close menu on selection on mobile
+                }}
+                className={`sidebar-item w-full ${isActive ? 'active' : ''}`}
+              >
+                <Icon className={`w-5 h-5 ${isActive ? 'text-primary' : ''}`} />
+                <span className={isActive ? 'text-primary font-medium' : ''}>{item.label}</span>
+                {isActive && (
+                  <div className="ml-auto w-2 h-2 rounded-full bg-primary animate-pulse-glow" />
+                )}
+              </button>
+            );
+          })}
+        </nav>
 
-      {/* Logout */}
-      <div className="p-4 border-t border-sidebar-border">
-        <button
-          onClick={onLogout}
-          className="sidebar-item w-full text-destructive hover:bg-destructive/10 hover:text-destructive"
-        >
-          <LogOut className="w-5 h-5" />
-          <span>{t.logout}</span>
-        </button>
+        {/* Logout */}
+        <div className="p-4 border-t border-sidebar-border">
+          <button
+            onClick={onLogout}
+            className="sidebar-item w-full text-destructive hover:bg-destructive/10 hover:text-destructive"
+          >
+            <LogOut className="w-5 h-5" />
+            <span>{t.logout}</span>
+          </button>
+        </div>
       </div>
-    </div>
+    </>
   );
 };

@@ -11,7 +11,7 @@ import {
   InternshipLevel,
 } from "@/components/OnboardingFlow";
 import { LanguageProvider } from "@/contexts/LanguageContext";
-import { Loader2 } from "lucide-react";
+import { Loader2, Menu } from "lucide-react";
 import { API_URL } from "@/config";
 
 
@@ -25,6 +25,7 @@ const DashboardContent = () => {
   const [activeMenu, setActiveMenu] = useState<ActiveMenu>("tasks");
   const [userField, setUserField] = useState<InternshipField>("frontend");
   const [userLevel, setUserLevel] = useState<InternshipLevel>("junior");
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   // Check if user already has field and level set
   useEffect(() => {
@@ -132,15 +133,29 @@ const DashboardContent = () => {
   };
 
   return (
-    <div className="h-screen bg-background flex overflow-hidden">
+    <div className="h-screen bg-background flex flex-col md:flex-row overflow-hidden">
+      {/* Mobile Top Bar */}
+      <div className="md:hidden p-4 border-b border-border bg-card flex items-center justify-between shrink-0">
+        <h1 className="font-bold text-lg text-foreground">InternSim</h1>
+        <button 
+          onClick={() => setIsMobileMenuOpen(true)}
+          className="p-2 hover:bg-secondary rounded-lg transition-colors"
+        >
+          <Menu className="w-6 h-6 text-foreground" />
+        </button>
+      </div>
+
       <Sidebar
         activeMenu={activeMenu}
         onMenuChange={(menu) => setActiveMenu(menu as ActiveMenu)}
         onLogout={handleLogout}
         userField={userField}
         userLevel={userLevel}
+        isOpen={isMobileMenuOpen}
+        onClose={() => setIsMobileMenuOpen(false)}
       />
-      <main className="flex-1 p-6 overflow-y-auto">
+      
+      <main className="flex-1 p-4 md:p-6 overflow-y-auto w-full">
         <div className="h-full animate-fade-in">{renderContent()}</div>
       </main>
     </div>
