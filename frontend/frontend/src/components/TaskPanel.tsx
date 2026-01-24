@@ -218,44 +218,46 @@ export const TaskPanel = ({ field, level }: TaskPanelProps) => {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-        <div className="stat-card">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-muted-foreground text-sm">{t.pending}</p>
-              <p className="text-3xl font-bold text-foreground mt-1">{groupedTasks.todo.length}</p>
+      {tasks.length > 0 && (
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+          <div className="stat-card">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-muted-foreground text-sm">{t.pending}</p>
+                <p className="text-3xl font-bold text-foreground mt-1">{groupedTasks.todo.length}</p>
+              </div>
+              <div className="w-12 h-12 rounded-xl bg-muted flex items-center justify-center">
+                <Clock className="w-6 h-6 text-muted-foreground" />
+              </div>
             </div>
-            <div className="w-12 h-12 rounded-xl bg-muted flex items-center justify-center">
-              <Clock className="w-6 h-6 text-muted-foreground" />
+          </div>
+          <div className="stat-card">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-muted-foreground text-sm">{t.ongoing}</p>
+                <p className="text-3xl font-bold text-accent mt-1">{groupedTasks.progress.length}</p>
+              </div>
+              <div className="w-12 h-12 rounded-xl bg-accent/20 flex items-center justify-center">
+                <Zap className="w-6 h-6 text-accent" />
+              </div>
+            </div>
+          </div>
+          <div className="stat-card">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-muted-foreground text-sm">{t.completed}</p>
+                <p className="text-3xl font-bold text-success mt-1">{groupedTasks.done.length}</p>
+              </div>
+              <div className="w-12 h-12 rounded-xl bg-success/20 flex items-center justify-center">
+                <CheckCircle2 className="w-6 h-6 text-success" />
+              </div>
             </div>
           </div>
         </div>
-        <div className="stat-card">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-muted-foreground text-sm">{t.ongoing}</p>
-              <p className="text-3xl font-bold text-accent mt-1">{groupedTasks.progress.length}</p>
-            </div>
-            <div className="w-12 h-12 rounded-xl bg-accent/20 flex items-center justify-center">
-              <Zap className="w-6 h-6 text-accent" />
-            </div>
-          </div>
-        </div>
-        <div className="stat-card">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-muted-foreground text-sm">{t.completed}</p>
-              <p className="text-3xl font-bold text-success mt-1">{groupedTasks.done.length}</p>
-            </div>
-            <div className="w-12 h-12 rounded-xl bg-success/20 flex items-center justify-center">
-              <CheckCircle2 className="w-6 h-6 text-success" />
-            </div>
-          </div>
-        </div>
-      </div>
+      )}
 
       {/* Task List */}
-      <div className="flex-1 overflow-y-auto scrollbar-cyber space-y-3">
+      <div className="flex-1 overflow-y-auto scrollbar-cyber space-y-3 min-h-[300px]">
         {isLoading ? (
           <div className="flex items-center justify-center py-12">
             <RefreshCw className="w-8 h-8 text-primary animate-spin" />
@@ -281,7 +283,7 @@ export const TaskPanel = ({ field, level }: TaskPanelProps) => {
             <div
               key={task.id}
               onClick={() => setSelectedTask(task)}
-              className="task-card group min-h-[550px] flex flex-col justify-between"
+              className="task-card group min-h-[300px] flex flex-col justify-between"
             >
               <div className="flex flex-col md:flex-row items-start gap-4 flex-1">
                 <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0 group-hover:bg-primary/20 transition-colors">
