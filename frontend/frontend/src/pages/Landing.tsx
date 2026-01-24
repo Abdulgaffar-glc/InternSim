@@ -16,6 +16,8 @@ import {
   LayoutDashboard,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Menu } from "lucide-react";
 
 const Landing = () => {
   const { t, language } = useLanguage();
@@ -76,10 +78,11 @@ const Landing = () => {
                 </p>
               </div>
             </div>
-            <div className="flex items-center gap-4">
+
+            {/* Desktop Navigation */}
+            <div className="hidden md:flex items-center gap-4">
               <LanguageSwitcher />
               {isLoggedIn ? (
-                // If logged in, show Dashboard button
                 <Link to="/dashboard">
                   <Button className="bg-gradient-to-r from-primary to-accent hover:opacity-90">
                     <LayoutDashboard className="w-4 h-4 mr-2" />
@@ -87,10 +90,9 @@ const Landing = () => {
                   </Button>
                 </Link>
               ) : (
-                // If not logged in, show Login and Get Started buttons
                 <>
                   <Link to="/auth">
-                    <Button variant="outline" className="hidden sm:flex">
+                    <Button variant="outline">
                       {t.login}
                     </Button>
                   </Link>
@@ -102,6 +104,44 @@ const Landing = () => {
                   </Link>
                 </>
               )}
+            </div>
+
+            {/* Mobile Navigation */}
+            <div className="md:hidden flex items-center gap-4">
+              <LanguageSwitcher />
+              <Sheet>
+                <SheetTrigger asChild>
+                  <Button variant="ghost" size="icon">
+                    <Menu className="w-6 h-6" />
+                  </Button>
+                </SheetTrigger>
+                <SheetContent side="right" className="w-[300px] sm:w-[400px]">
+                  <div className="flex flex-col gap-6 mt-8">
+                    {isLoggedIn ? (
+                       <Link to="/dashboard">
+                        <Button className="w-full bg-gradient-to-r from-primary to-accent hover:opacity-90">
+                          <LayoutDashboard className="w-4 h-4 mr-2" />
+                          {language === 'tr' ? 'Panele Git' : 'Go to Dashboard'}
+                        </Button>
+                      </Link>
+                    ) : (
+                      <>
+                        <Link to="/auth">
+                          <Button variant="outline" className="w-full justify-start">
+                            {t.login}
+                          </Button>
+                        </Link>
+                        <Link to="/auth">
+                          <Button className="w-full bg-gradient-to-r from-primary to-accent hover:opacity-90 justify-start">
+                            {t.getStarted}
+                            <ChevronRight className="w-4 h-4 ml-1" />
+                          </Button>
+                        </Link>
+                      </>
+                    )}
+                  </div>
+                </SheetContent>
+              </Sheet>
             </div>
           </div>
         </div>

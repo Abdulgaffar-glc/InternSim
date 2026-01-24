@@ -11,7 +11,8 @@ import {
   InternshipLevel,
 } from "@/components/OnboardingFlow";
 import { LanguageProvider } from "@/contexts/LanguageContext";
-import { Loader2 } from "lucide-react";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Loader2, Menu, Terminal } from "lucide-react";
 import { API_URL } from "@/config";
 
 
@@ -25,6 +26,7 @@ const DashboardContent = () => {
   const [activeMenu, setActiveMenu] = useState<ActiveMenu>("tasks");
   const [userField, setUserField] = useState<InternshipField>("frontend");
   const [userLevel, setUserLevel] = useState<InternshipLevel>("junior");
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
   // Check if user already has field and level set
   useEffect(() => {
@@ -133,15 +135,51 @@ const DashboardContent = () => {
 
   return (
     <div className="h-screen bg-background flex overflow-hidden">
-      <Sidebar
-        activeMenu={activeMenu}
-        onMenuChange={(menu) => setActiveMenu(menu as ActiveMenu)}
-        onLogout={handleLogout}
-        userField={userField}
-        userLevel={userLevel}
-      />
-      <main className="flex-1 p-6 overflow-y-auto">
-        <div className="h-full animate-fade-in">{renderContent()}</div>
+      {/* Desktop Sidebar */}
+      <div className="hidden md:flex">
+        <Sidebar
+          activeMenu={activeMenu}
+          onMenuChange={(menu) => setActiveMenu(menu as ActiveMenu)}
+          onLogout={handleLogout}
+          userField={userField}
+          userLevel={userLevel}
+          collapsed={isSidebarCollapsed}
+          onCollapseToggle={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
+        />
+      </div>
+
+      <main className="flex-1 flex flex-col h-full overflow-hidden">
+        {/* Mobile Header */}
+        <div className="md:hidden p-4 border-b border-border flex items-center justify-between bg-sidebar">
+           <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center neon-glow">
+              <Terminal className="w-4 h-4 text-primary" />
+            </div>
+            <span className="font-bold text-gradient-primary">InternSim</span>
+          </div>
+          
+          <Sheet>
+            <SheetTrigger asChild>
+              <button className="p-2 hover:bg-muted rounded-md">
+                <Menu className="w-6 h-6" />
+              </button>
+            </SheetTrigger>
+            <SheetContent side="left" className="p-0 w-80 border-r-sidebar-border bg-sidebar">
+              <Sidebar
+                activeMenu={activeMenu}
+                onMenuChange={(menu) => setActiveMenu(menu as ActiveMenu)}
+                onLogout={handleLogout}
+                userField={userField}
+                userLevel={userLevel}
+                isMobile={true}
+              />
+            </SheetContent>
+          </Sheet>
+        </div>
+
+        <div className="flex-1 overflow-y-auto p-6">
+          <div className="h-full animate-fade-in">{renderContent()}</div>
+        </div>
       </main>
     </div>
   );

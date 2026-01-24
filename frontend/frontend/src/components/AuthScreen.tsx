@@ -96,17 +96,17 @@ export const AuthScreen = ({ onLogin }: AuthScreenProps) => {
     <div className="min-h-screen bg-background flex items-center justify-center p-4 relative overflow-hidden">
       {/* Background Effects */}
       <div className="absolute inset-0 cyber-grid opacity-30" />
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-[120px] animate-float" />
-      <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-accent/10 rounded-full blur-[120px] animate-float" style={{ animationDelay: '-3s' }} />
+      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-[120px] animate-float hidden md:block" />
+      <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-accent/10 rounded-full blur-[120px] animate-float hidden md:block" style={{ animationDelay: '-3s' }} />
 
       {/* Floating Icons */}
-      <div className="absolute top-20 left-20 text-primary/20 animate-float">
+      <div className="absolute top-20 left-20 text-primary/20 animate-float hidden md:block">
         <Code2 size={48} />
       </div>
-      <div className="absolute bottom-20 right-20 text-accent/20 animate-float" style={{ animationDelay: '-2s' }}>
+      <div className="absolute bottom-20 right-20 text-accent/20 animate-float hidden md:block" style={{ animationDelay: '-2s' }}>
         <Terminal size={48} />
       </div>
-      <div className="absolute top-1/3 right-1/4 text-primary/20 animate-float" style={{ animationDelay: '-4s' }}>
+      <div className="absolute top-1/3 right-1/4 text-primary/20 animate-float hidden md:block" style={{ animationDelay: '-4s' }}>
         <Sparkles size={32} />
       </div>
 
