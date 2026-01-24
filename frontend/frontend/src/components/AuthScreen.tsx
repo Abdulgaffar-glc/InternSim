@@ -3,12 +3,13 @@ import { Link } from 'react-router-dom';
 import { Terminal, Eye, EyeOff, Mail, Lock, User, Zap, Code2, Sparkles, AlertCircle } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { LanguageSwitcher } from './LanguageSwitcher';
+import { API_URL } from '@/config';
 
 interface AuthScreenProps {
   onLogin: (token: string, userId: number) => void;
 }
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+
 
 export const AuthScreen = ({ onLogin }: AuthScreenProps) => {
   const { t, language } = useLanguage();

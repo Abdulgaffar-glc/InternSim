@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { Send, Bot, User, Code, Sparkles, Clock, MoreHorizontal, Plus, Trash2 } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { API_URL } from '@/config';
 
 interface Message {
   id: number;
@@ -17,7 +18,7 @@ interface Conversation {
   updatedAt: string;
 }
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+
 
 const getToken = () => localStorage.getItem('token');
 

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { X, Clock, Zap, ChevronRight, Code2, Brain, Shield, Server, RefreshCw, CheckCircle2 } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { InternshipField, InternshipLevel } from './OnboardingFlow';
+import { API_URL } from '@/config';
 
 interface Task {
   id: number;
@@ -21,7 +22,7 @@ interface TaskPanelProps {
   level: InternshipLevel;
 }
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+
 
 const fieldIcons: Record<string, React.ElementType> = {
   frontend: Code2,

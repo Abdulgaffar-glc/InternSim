@@ -12,8 +12,9 @@ import {
 } from "@/components/OnboardingFlow";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { Loader2 } from "lucide-react";
+import { API_URL } from "@/config";
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+
 
 type ActiveMenu = "tasks" | "chat" | "performance" | "submission";
 
