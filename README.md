@@ -3,7 +3,7 @@
 ## 🎯 Proje Hakkında
 
 InternSim, stajyer yönetimi ve AI destekli değerlendirme sistemidir. Bu proje 4 kişi tarafından ayrı ayrı geliştirilmiş modüllerin entegrasyonundan oluşmuştur.
-Projeye [internsim.com.tr](https://internsim.com.tr/)'den ulaşabilirsiniz(Not: Proje Render free tier ile hostlandığı için ilk sorguda yaklaşık 40 saniye beklemeniz gerekebilir).
+Projeye [internsim.com.tr](https://internsim.com.tr/)'den ulaşabilirsiniz(Not: Proje backend'i Render free tier ile hostlandığı için ilk sorguda yaklaşık 40 saniye beklemeniz gerekebilir).
 
 ### Özellikler
 - 🔐 Kullanıcı kimlik doğrulama (JWT)
